@@ -1,4 +1,4 @@
-package org.eclipse.virgo.bundlor
+package org.eclipse.virgo.bundlor.gradle
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -39,18 +39,18 @@ public class BundlorPlugin implements Plugin<Project> {
                 failOnWarnings = true
                 bundleName = null
                 bundleVersion = project.version
-                bundleVendor = 'SpringSource'
+                bundleVendor = ''
                 bundleSymbolicName = null
                 bundleManifestVersion = '2'
                 importTemplate = []
-		        exportTemplate = []
-		        excludedImports = []
-		        excludedExports = []
+	        exportTemplate = []
+	        excludedImports = []
+	        excludedExports = []
                 manifestTemplate = null
-		        manifestTemplatePath = null
+	        manifestTemplatePath = null
 
                 outputDir = new File("${project.buildDir}/bundlor")
-		        propertiesFile = new File("${project.projectDir}/gradle.properties")
+	        propertiesFile = new File("${project.projectDir}/gradle.properties")
             }
 			
             def manifest = new File("${outputDir}/META-INF/MANIFEST.MF")
