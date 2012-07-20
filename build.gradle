@@ -1,0 +1,64 @@
+println """\
+Welcome to Gradle $gradle.gradleVersion - http://www.gradle.org
+Gradle home is set to: $gradle.gradleHomeDir
+Gradle user directory is set to: $gradle.gradleUserHomeDir
+
+Base directory: $projectDir
+Running script ${relativePath(buildFile)}
+"""
+
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'git'
+
+apply plugin: 'signing'
+
+group = 'org.eclipse.virgo.bundlor'
+version = '0.1.3-SNAPSHOT'
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.ajoberstar:gradle-git:0.1.0'
+    }
+}
+
+test {
+    //jvmArgs '-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005'
+    //debug true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+    testCompile group: 'junit', name: 'junit', version: '4.8.1'
+    groovy localGroovy()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0'
+}
+
+task sourcesJar(type: Jar, dependsOn:classes) {
+     classifier = 'sources'
+     from sourceSets.main.allSource
+}
+
+task groovydocJar(type: Jar, dependsOn:groovydoc) {
+     classifier = 'groovydoc'
+     from groovydoc.destinationDir
+}
+
+artifacts {
+     archives sourcesJar
+     archives groovydocJar
+}
